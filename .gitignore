@@ -1,0 +1,47 @@
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Dependencies
+/vendor/
+node_modules/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log
+yarn-error.log
+
+# Testing
+.phpunit.result.cache
+.phpunit.cache/
+coverage/
+.coverage
+
+# Build
+/build/
+
+# Laravel specific
+bootstrap/compiled.php
+storage/*.key
+Homestead.yaml
+Homestead.json
+/.vagrant
+
+# Composer
+composer.lock
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.cache
+.php-cs-fixer.cache
+cghooks.lock

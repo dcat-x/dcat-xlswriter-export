@@ -1,0 +1,71 @@
+{
+    "name": "dcat-x/dcat-xlswriter-export",
+    "description": "High-performance Excel export extension for Dcat Admin based on xlswriter",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "dcat-admin",
+        "excel",
+        "xlswriter",
+        "export",
+        "spreadsheet"
+    ],
+    "authors": [
+        {
+            "name": "aoding9",
+            "email": "xy5217733@163.com"
+        },
+        {
+            "name": "cooper",
+            "email": "myxiaoao@gmail.com"
+        }
+    ],
+    "homepage": "https://github.com/dcat-x/dcat-xlswriter-export",
+    "support": {
+        "issues": "https://github.com/dcat-x/dcat-xlswriter-export/issues",
+        "source": "https://github.com/dcat-x/dcat-xlswriter-export"
+    },
+    "require": {
+        "php": "^8.2",
+        "ext-xlswriter": "*",
+        "dcat-x/laravel-admin": "^1.0",
+        "laravel/framework": "^12.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "orchestra/testbench": "^10.0",
+        "pestphp/pest": "^3.0",
+        "viest/php-ext-xlswriter-ide-helper": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aoding9\\Dcat\\Xlswriter\\Export\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Aoding9\\Dcat\\Xlswriter\\Export\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "lint": "pint",
+        "test": "pest",
+        "test:coverage": "pest --coverage"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Aoding9\\Dcat\\Xlswriter\\Export\\ExportServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
