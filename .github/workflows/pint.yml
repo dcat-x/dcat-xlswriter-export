@@ -23,7 +23,7 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
+        run: composer install --prefer-dist --no-interaction --no-progress --ignore-platform-req=ext-xlswriter
 
       - name: Run Pint
         run: composer lint -- --test
