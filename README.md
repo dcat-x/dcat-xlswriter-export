@@ -13,30 +13,43 @@
 
 **基于 [xlswriter](https://xlswriter-docs.viest.me/) 的 [Dcat Admin](https://github.com/dcat-x/laravel-admin) 高性能 Excel 导出扩展**
 
+[English](README.en.md) | 简体中文
+
 </div>
 
 ## 特性
 
 - 高性能、低内存占用（支持 50 万+ 行数据导出）
-- 大数据集分块处理
+- 大数据集分块处理（默认 5000 条/块）
 - 自定义样式（字体、颜色、边框、对齐方式）
-- 单元格合并
-- 冻结表头
+- 单元格合并支持
+- 冻结表头支持
 - 多种数据源（Query Builder、Collection、Array、Dcat Grid）
 - Swoole 兼容
+- 生命周期钩子
 
 ## 环境要求
 
-- PHP ^8.2
-- Laravel ^12.0
-- [xlswriter PHP 扩展](https://xlswriter-docs.viest.me/)
-- dcat-x/laravel-admin ^1.0
+| 依赖 | 版本 |
+|------|------|
+| PHP | ^8.2 |
+| Laravel | ^12.0 |
+| Dcat Admin | ^1.0 |
+| xlswriter 扩展 | * |
 
 ## 安装
 
 ### 1. 安装 xlswriter 扩展
 
 参考官方文档：https://xlswriter-docs.viest.me/
+
+```bash
+# Linux
+pecl install xlswriter
+
+# 添加到 php.ini
+extension=xlswriter.so
+```
 
 安装后通过 `php -m | grep xlswriter` 或 `phpinfo()` 验证。
 
@@ -123,27 +136,43 @@ $export = new UserExport([
 ```php
 class UserExport extends BaseExport
 {
-    public $fileName = '用户列表';
-    public $tableTitle = '用户数据';
+    // 基础配置
+    public $fileName = '用户列表';      // 文件名（自动添加时间戳）
+    public $tableTitle = '用户数据';    // 首行标题
+    public $sheetName = 'Sheet1';       // 工作表名称
 
     // 样式设置
-    public $fontFamily = '微软雅黑';
-    public $rowHeight = 40;
-    public $headerRowHeight = 40;
-    public $titleRowHeight = 50;
+    public $fontFamily = '微软雅黑';    // 默认字体
+    public $rowHeight = 40;             // 数据行高
+    public $headerRowHeight = 40;       // 表头行高
+    public $titleRowHeight = 50;        // 标题行高
 
     // 功能开关
-    public $useTitle = true;           // 显示标题行
-    public $useFreezePanes = false;    // 冻结表头
-    public $useGlobalStyle = true;     // 应用全局样式
+    public $useTitle = true;            // 显示标题行
+    public $useFreezePanes = false;     // 冻结表头
+    public $useGlobalStyle = true;      // 应用全局样式
 
     // 性能配置
-    public $chunkSize = 5000;          // 每块数据量
-    public $max = 500000;              // 最大导出行数
+    public $chunkSize = 5000;           // 每块数据量
+    public $max = 500000;               // 最大导出行数
 
-    // 调试模式
-    public $debug = false;             // 开启调试输出
+    // 其他
+    public $debug = false;              // 调试模式
+    public $shouldDelete = true;        // 下载后删除临时文件
 }
+```
+
+### 链式调用配置
+
+```php
+$export = (new UserExport())
+    ->setFontFamily('Arial')
+    ->setHeaderRowHeight(50)
+    ->setTitleRowHeight(60)
+    ->setMax(100000)
+    ->setChunkSize(2000)
+    ->useFreezePanes(true)
+    ->setDebug(true);
 ```
 
 ### 单元格合并
@@ -163,6 +192,39 @@ public function mergeCellsAfterInsertData(): array
 }
 ```
 
+### 自定义样式
+
+```php
+class UserExport extends BaseExport
+{
+    protected function getSpecialStyle()
+    {
+        return (new \Vtiful\Kernel\Format($this->fileHandle))
+            ->fontSize(12)
+            ->font('微软雅黑')
+            ->bold()
+            ->italic()
+            ->background(\Vtiful\Kernel\Format::COLOR_YELLOW)
+            ->align(
+                \Vtiful\Kernel\Format::FORMAT_ALIGN_CENTER,
+                \Vtiful\Kernel\Format::FORMAT_ALIGN_VERTICAL_CENTER
+            )
+            ->border(\Vtiful\Kernel\Format::BORDER_THIN)
+            ->toResource();
+    }
+
+    public function insertCellHandle($line, $column, $data, $format, $formatHandle)
+    {
+        // 根据条件应用不同样式
+        if ($column === 2 && $data === '特殊值') {
+            $formatHandle = $this->getSpecialStyle();
+        }
+
+        return $this->excel->insertText($line, $column, $data, $format, $formatHandle);
+    }
+}
+```
+
 ### 生命周期钩子
 
 ```php
@@ -176,7 +238,7 @@ class UserExport extends BaseExport
 
     public function afterInsertEachRowInEachChunk($rowData)
     {
-        // 每行数据插入后调用
+        // 每行数据插入后调用（可用于动态合并单元格）
     }
 
     public function afterInsertData()
@@ -219,6 +281,40 @@ class UserController extends AdminController
 }
 ```
 
+## API 参考
+
+### BaseExport 属性
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `$fileName` | string | '文件名' | 导出文件名 |
+| `$tableTitle` | string | '表名' | 首行标题 |
+| `$header` | array | [] | 表头定义 |
+| `$fontFamily` | string | '微软雅黑' | 默认字体 |
+| `$rowHeight` | int | 40 | 数据行高 |
+| `$headerRowHeight` | int | 40 | 表头行高 |
+| `$titleRowHeight` | int | 50 | 标题行高 |
+| `$useTitle` | bool | true | 是否显示标题行 |
+| `$useFreezePanes` | bool | false | 是否冻结表头 |
+| `$useGlobalStyle` | bool | true | 是否使用全局样式 |
+| `$chunkSize` | int | 5000 | 分块大小 |
+| `$max` | int | 500000 | 最大导出行数 |
+| `$debug` | bool | false | 调试模式 |
+| `$shouldDelete` | bool | true | 下载后删除文件 |
+| `$useSwoole` | bool | false | Swoole 模式 |
+
+### BaseExport 方法
+
+| 方法 | 说明 |
+|------|------|
+| `eachRow($row): array` | **抽象方法**，定义数据到列的映射 |
+| `export()` | 执行导出（保存 + 下载） |
+| `store()` | 保存到临时文件 |
+| `download($filePath)` | 下载文件 |
+| `getColumn(int $index): string` | 列索引转字母（0 → A） |
+| `getColumnIndexByName(string $name): int` | 列字母转索引（A → 0） |
+| `mergeCellsAfterInsertData(): array` | 定义合并单元格规则 |
+
 ## 测试
 
 ```bash
@@ -247,7 +343,7 @@ composer lint
 
 ## 致谢
 
-- [aoding9](https://github.com/aoding9)
+- [aoding9](https://github.com/aoding9) - 原作者
 - [cooper](https://github.com/myxiaoao)
 - [所有贡献者](../../contributors)
 

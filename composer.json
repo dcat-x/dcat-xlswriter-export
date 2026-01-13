@@ -6,10 +6,12 @@
     "keywords": [
         "laravel",
         "dcat-admin",
+        "dcat-x",
         "excel",
         "xlswriter",
         "export",
-        "spreadsheet"
+        "spreadsheet",
+        "xlsx"
     ],
     "authors": [
         {
@@ -24,8 +26,15 @@
     "homepage": "https://github.com/dcat-x/dcat-xlswriter-export",
     "support": {
         "issues": "https://github.com/dcat-x/dcat-xlswriter-export/issues",
-        "source": "https://github.com/dcat-x/dcat-xlswriter-export"
+        "source": "https://github.com/dcat-x/dcat-xlswriter-export",
+        "docs": "https://github.com/dcat-x/dcat-xlswriter-export#readme"
     },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/myxiaoao"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "ext-xlswriter": "*",
@@ -50,15 +59,9 @@
     },
     "scripts": {
         "lint": "pint",
+        "lint:fix": "pint --repair",
         "test": "pest",
         "test:coverage": "pest --coverage"
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Aoding9\\Dcat\\Xlswriter\\Export\\ExportServiceProvider"
-            ]
-        }
     },
     "config": {
         "sort-packages": true,
