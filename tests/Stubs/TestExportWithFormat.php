@@ -28,8 +28,6 @@ class TestExportWithFormat extends TestExport
 
     /**
      * Track calls to insertCellHandle for testing
-     *
-     * @var array
      */
     public array $insertCellCalls = [];
 

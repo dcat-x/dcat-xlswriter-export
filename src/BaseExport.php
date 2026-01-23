@@ -840,8 +840,6 @@ abstract class BaseExport extends AbstractExporter
 
     /**
      * 获取列的默认数字格式（从 header 配置读取）
-     *
-     * @return string|null
      */
     protected function getColumnFormat(int $column): ?string
     {
