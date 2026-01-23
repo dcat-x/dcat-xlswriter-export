@@ -24,6 +24,7 @@
 - 自定义样式（字体、颜色、边框、对齐方式）
 - 单元格合并支持
 - 冻结表头支持
+- 列数字格式配置（金额、百分比、千分位等）
 - 多种数据源（Query Builder、Collection、Array、Dcat Grid）
 - Swoole 兼容
 - 生命周期钩子
@@ -259,6 +260,47 @@ class UserExport extends BaseExport
 }
 ```
 
+### 列数字格式
+
+在 `$header` 中通过 `format` 字段定义列的数字格式，确保数字在 Excel 中正确显示：
+
+```php
+class OrderExport extends BaseExport
+{
+    public $header = [
+        ['column' => 'a', 'width' => 8, 'name' => '序号'],
+        ['column' => 'b', 'width' => 15, 'name' => '订单号'],
+        ['column' => 'c', 'width' => 12, 'name' => '金额', 'format' => '0.00'],
+        ['column' => 'd', 'width' => 12, 'name' => '手续费', 'format' => '0.00'],
+        ['column' => 'e', 'width' => 10, 'name' => '数量', 'format' => '#,##0'],
+        ['column' => 'f', 'width' => 10, 'name' => '折扣率', 'format' => '0.00%'],
+    ];
+
+    public function eachRow($row): array
+    {
+        return [
+            $this->index,
+            $row->order_no,
+            $row->amount / 100,       // 分转元，自动应用 '0.00' 格式
+            $row->fee / 100,
+            $row->quantity,           // 自动应用 '#,##0' 格式
+            $row->discount_rate,      // 自动应用 '0.00%' 格式
+        ];
+    }
+}
+```
+
+**常用格式：**
+
+| 格式 | 说明 | 示例 |
+|------|------|------|
+| `0.00` | 两位小数 | 10.50 |
+| `#,##0` | 整数带千分位 | 1,234 |
+| `#,##0.00` | 两位小数带千分位 | 1,234.56 |
+| `0.00%` | 百分比 | 15.00% |
+
+**格式优先级：** 传入格式 > header 配置格式 > 浮点数自动 `'0.00'` 格式
+
 ### Swoole 支持
 
 Swoole 环境下无法调用 `exit()`，需要开启 Swoole 模式：
@@ -313,6 +355,7 @@ class UserController extends AdminController
 | `download($filePath)` | 下载文件 |
 | `getColumn(int $index): string` | 列索引转字母（0 → A） |
 | `getColumnIndexByName(string $name): int` | 列字母转索引（A → 0） |
+| `getColumnFormat(int $column): ?string` | 获取列的数字格式配置 |
 | `mergeCellsAfterInsertData(): array` | 定义合并单元格规则 |
 
 ## 测试
