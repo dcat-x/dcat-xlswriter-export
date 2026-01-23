@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0]
+
+### Added
+- 列数字格式配置：在 header 中通过 `format` 字段定义列的数字格式（如 `'0.00'`、`'#,##0'`、`'0.00%'`）
+- 浮点数自动格式化：未配置格式的浮点数自动应用 `'0.00'` 格式，确保 Excel 正确识别数字类型
+- 新增 `getColumnFormat()` 方法获取列格式配置
+- 新增 `OrderExport` 示例类展示数字格式功能用法
+- 新增 `ColumnFormatTest` 测试覆盖数字格式功能
+
+### Changed
+- `insertCellHandle()` 方法增强，支持格式优先级：传入格式 > header 配置格式 > 浮点数自动格式
+
 ## [1.0.0]
 
 ### Added

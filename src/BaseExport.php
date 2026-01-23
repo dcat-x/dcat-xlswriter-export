@@ -838,8 +838,38 @@ abstract class BaseExport extends AbstractExporter
         return $this->getColumn($column).$currentLine;
     }
 
+    /**
+     * 获取列的默认数字格式（从 header 配置读取）
+     *
+     * @return string|null
+     */
+    protected function getColumnFormat(int $column): ?string
+    {
+        return $this->header[$column]['format'] ?? null;
+    }
+
+    /**
+     * 插入单元格数据，自动识别数字类型
+     *
+     * @param  int  $currentLine
+     * @param  int  $column
+     * @param  int|string|float  $data
+     * @param  string|null  $format  数字格式，如 '0.00'、'#,##0'、'0.00%'
+     * @param  resource|null  $formatHandle
+     * @return Excel
+     */
     public function insertCellHandle($currentLine, $column, $data, $format, $formatHandle)
     {
+        // 优先使用传入的 format，其次使用 header 中定义的 format
+        if ($format === null) {
+            $format = $this->getColumnFormat($column);
+        }
+
+        // 如果仍无格式，对浮点数自动应用默认格式
+        if ($format === null && is_float($data)) {
+            $format = '0.00';
+        }
+
         return $this->excel->insertText($currentLine, $column, $data, $format, $formatHandle);
     }
 

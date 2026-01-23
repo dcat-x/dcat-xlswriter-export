@@ -60,4 +60,12 @@ class TestExport extends BaseExport
             $row['email'] ?? $row->email ?? '',
         ];
     }
+
+    /**
+     * Expose getColumnFormat for testing
+     */
+    public function getColumnFormat(int $column): ?string
+    {
+        return parent::getColumnFormat($column);
+    }
 }
