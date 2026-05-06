@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Aoding9\Dcat\Xlswriter\Export\Tests\Stubs\TestExport;
+use Illuminate\Support\Collection;
 
 describe('Export Integration', function () {
     it('can create export instance with array data', function () {
@@ -97,7 +98,7 @@ describe('Export Integration', function () {
         $export->useTitle = true;
         $export->setHeaderData();
 
-        expect($export->headerData)->toBeInstanceOf(\Illuminate\Support\Collection::class)
+        expect($export->headerData)->toBeInstanceOf(Collection::class)
             ->and($export->headerData->count())->toBe(2)
             ->and($export->headerData[0])->toBe(['测试表格标题'])
             ->and($export->headerData[1])->toBe(['ID', '名称', '邮箱']);

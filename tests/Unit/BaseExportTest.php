@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Aoding9\Dcat\Xlswriter\Export\Tests\Stubs\TestExport;
+use Illuminate\Support\Collection;
 
 beforeEach(function () {
     $this->tempDir = sys_get_temp_dir();
@@ -99,7 +100,7 @@ describe('initDataSource - 数据源初始化', function () {
         $export = createTestExport($data);
 
         expect($export->dataSourceType)->toBe('collection')
-            ->and($export->getData())->toBeInstanceOf(\Illuminate\Support\Collection::class)
+            ->and($export->getData())->toBeInstanceOf(Collection::class)
             ->and($export->getData()->count())->toBe(1)
             ->and($export->index)->toBe(1);
     });
@@ -109,7 +110,7 @@ describe('initDataSource - 数据源初始化', function () {
         $export = createTestExport($data);
 
         expect($export->dataSourceType)->toBe('collection')
-            ->and($export->getData())->toBeInstanceOf(\Illuminate\Support\Collection::class);
+            ->and($export->getData())->toBeInstanceOf(Collection::class);
     });
 
     it('initializes with null data source as other type', function () {
@@ -124,7 +125,7 @@ describe('setData - 设置数据', function () {
         $export = createTestExport();
         $export->setData(['item1', 'item2']);
 
-        expect($export->getData())->toBeInstanceOf(\Illuminate\Support\Collection::class)
+        expect($export->getData())->toBeInstanceOf(Collection::class)
             ->and($export->getData()->count())->toBe(2);
     });
 

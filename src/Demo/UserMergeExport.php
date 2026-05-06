@@ -3,7 +3,9 @@
 namespace Aoding9\Dcat\Xlswriter\Export\Demo;
 
 use Aoding9\Dcat\Xlswriter\Export\BaseExport;
+use Faker\Factory;
 use Illuminate\Support\Carbon;
+use Vtiful\Kernel\Excel;
 use Vtiful\Kernel\Format;
 
 // 要导出的模型，用于代码提示
@@ -29,7 +31,7 @@ class UserMergeExport extends BaseExport
         return [
             $this->index,      // 自增序号，绑定在模型中
             $row->id,
-            $row->name = \Faker\Factory::create('zh_CN')->name,
+            $row->name = Factory::create('zh_CN')->name,
             $this->getGender(),
             $row->created_at,
         ];
@@ -130,7 +132,7 @@ class UserMergeExport extends BaseExport
      * @param  mixed  $data  插入的数据
      * @param  string|null  $format  数据格式化
      * @param  resource|null  $formatHandle  表格样式
-     * @return \Vtiful\Kernel\Excel
+     * @return Excel
      *
      * @Date 2023/6/21 23:37
      */
