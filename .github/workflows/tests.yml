@@ -13,9 +13,24 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2, 8.3, 8.4]
+        include:
+          - php: 8.2
+            laravel: 12
+            testbench: 10
+          - php: 8.3
+            laravel: 12
+            testbench: 10
+          - php: 8.3
+            laravel: 13
+            testbench: 11
+          - php: 8.4
+            laravel: 12
+            testbench: 10
+          - php: 8.4
+            laravel: 13
+            testbench: 11
 
-    name: PHP ${{ matrix.php }}
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
@@ -29,7 +44,15 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress --ignore-platform-req=ext-xlswriter
+        env:
+          LARAVEL_VERSION: ${{ matrix.laravel }}
+          TESTBENCH_VERSION: ${{ matrix.testbench }}
+        run: |
+          composer require \
+            "laravel/framework:^${LARAVEL_VERSION}.0" \
+            "orchestra/testbench:^${TESTBENCH_VERSION}.0" \
+            --no-update --no-interaction
+          composer update --prefer-dist --no-interaction --no-progress --ignore-platform-req=ext-xlswriter
 
       - name: Execute tests
         run: composer test

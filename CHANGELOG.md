@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0]
+
+### Changed
+- 同时兼容 `dcat-x/laravel-admin` 1.x 与 2.x：`composer.json` 放宽至 `^1.0||^2.0`
+- 同时兼容 Laravel 12 与 Laravel 13：`laravel/framework` 放宽至 `^12.0||^13.0`，`orchestra/testbench` 放宽至 `^10.0||^11.0`
+- CI 矩阵扩展为 PHP 8.2/8.3/8.4 × Laravel 12/13 共 5 个 job（PHP 8.2 + Laravel 13 因上游约束排除）
+
+### Style
+- 修复历史遗留的 pint 风格问题（fully_qualified_strict_types、ordered_imports）
+
+### Notes
+- PHP 8.2 用户继续可用（解析到 dcat-admin 1.x + Laravel 12）
+- 升级到 dcat-admin 2.x 或 Laravel 13 需 PHP 8.3+，详见 [dcat-admin v2.0.0 升级说明](https://github.com/dcat-x/dcat-admin/blob/main/docs/getting-started/update.md)
+
 ## [1.1.0]
 
 ### Added

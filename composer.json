@@ -38,12 +38,12 @@
     "require": {
         "php": "^8.2",
         "ext-xlswriter": "*",
-        "dcat-x/laravel-admin": "^1.0",
-        "laravel/framework": "^12.0"
+        "dcat-x/laravel-admin": "^1.0||^2.0",
+        "laravel/framework": "^12.0||^13.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
-        "orchestra/testbench": "^10.0",
+        "orchestra/testbench": "^10.0||^11.0",
         "pestphp/pest": "^3.0",
         "viest/php-ext-xlswriter-ide-helper": "^1.0"
     },

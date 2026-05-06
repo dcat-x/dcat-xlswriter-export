@@ -6,8 +6,8 @@
     <a href="https://github.com/dcat-x/dcat-xlswriter-export/actions"><img src="https://github.com/dcat-x/dcat-xlswriter-export/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
     <a href="https://packagist.org/packages/dcat-x/dcat-xlswriter-export"><img src="https://poser.pugx.org/dcat-x/dcat-xlswriter-export/v/stable" alt="Latest Stable Version"></a>
     <a href="https://packagist.org/packages/dcat-x/dcat-xlswriter-export"><img src="https://img.shields.io/packagist/dt/dcat-x/dcat-xlswriter-export.svg" alt="Total Downloads"></a>
-    <a href="https://www.php.net/"><img src="https://img.shields.io/badge/php-8.2+-59a9f8.svg" alt="PHP Version"></a>
-    <a href="https://laravel.com/"><img src="https://img.shields.io/badge/laravel-12+-59a9f8.svg" alt="Laravel Version"></a>
+    <a href="https://www.php.net/"><img src="https://img.shields.io/badge/php-8.2%20|%208.3%20|%208.4-59a9f8.svg" alt="PHP Version"></a>
+    <a href="https://laravel.com/"><img src="https://img.shields.io/badge/laravel-12%20|%2013-59a9f8.svg" alt="Laravel Version"></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
 </p>
 
@@ -33,10 +33,17 @@
 
 | 依赖 | 版本 |
 |------|------|
-| PHP | ^8.2 |
-| Laravel | ^12.0 |
-| Dcat Admin | ^1.0 |
+| PHP | ^8.2（搭配 Laravel 13 时需 ^8.3） |
+| Laravel | ^12.0 \|\| ^13.0 |
+| Dcat Admin | ^1.0 \|\| ^2.0 |
 | xlswriter 扩展 | * |
+
+**版本兼容矩阵**
+
+| dcat-x/laravel-admin | PHP | Laravel |
+|----------------------|------|---------|
+| 1.x | ^8.2 | ^12.0 |
+| 2.x | ^8.3 | ^12.0 \|\| ^13.0 |
 
 ## 安装
 
